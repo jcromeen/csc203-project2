@@ -31,7 +31,7 @@ public class FileProcessor {
                         String[] rev2 = revline2.split("");
                         LinkedList LL1 = addToList(rev1);
                         LinkedList LL2 = addToList(rev2);
-                        LinkedList add = Addition(LL1, LL2);
+                        LinkedList add = Addition(LL2, LL1);
                         System.out.println(printLinkedList(LL2) + " + " + printLinkedList(LL1) + " = " + printLinkedList(add));
                     }
                     else if(revstr.contains("*")){
@@ -43,21 +43,19 @@ public class FileProcessor {
                         String[] rev2 = revline2.split("");
                         LinkedList LL1 = addToList(rev1);
                         LinkedList LL2 = addToList(rev2);
-                        LinkedList mult = Multiplication(LL1, LL2);
+                        LinkedList mult = Multiplication(LL2, LL1);
                         System.out.println(printLinkedList(LL2) + " * " + printLinkedList(LL1) + " = " + printLinkedList(mult));
                     }
                     else if (revstr.contains("^")) {
                         //run power
                         String[] newrevstr = revstr.split("\\^");
                         String revline1 = newrevstr[0];
-                        System.out.println(revline1);
                         String revline2 = newrevstr[1];
-                        System.out.println(revline2);
                         String[] rev1 = revline1.split("");
                         String[] rev2 = revline2.split("");
                         LinkedList LL1 = addToList(rev1);
                         LinkedList LL2 = addToList(rev2);
-                        LinkedList pow = Power(LL1, LL2);
+                        LinkedList pow = Power(LL2, LL1);
                         System.out.println(printLinkedList(LL2) + " ^ " + printLinkedList(LL1) + " = " + printLinkedList(pow));
                     }
                 }
@@ -157,6 +155,19 @@ public class FileProcessor {
         return res;
     }
 
+    public static LinkedList multHelper(int one, int two){
+        int i = 1;
+        LinkedList res = new LinkedList();
+        LinkedList temp = new LinkedList();
+        res.insertNode(one);
+        temp.insertNode(one);
+        while(i < two){
+            res = Addition(res, temp);
+            i++;
+        }
+        return res;
+    }
+
     public static LinkedList Multiplication(LinkedList list1, LinkedList list2){
         LinkedList res = new LinkedList();
 
@@ -166,7 +177,7 @@ public class FileProcessor {
             LinkedList temp = new LinkedList();
             int carry = 0;
             for(int j = 0; j < list2.size(); j++){
-                int mult = curr1.getData() * curr2.getData();
+                int mult = Integer.valueOf(printLinkedList(multHelper(curr1.getData(), curr2.getData())));
                 carry = mult / 10;
                 mult %= 10;
                 temp.insertNode(mult);
@@ -184,83 +195,29 @@ public class FileProcessor {
         return res;
     }
 
-    public static LinkedList Power(LinkedList list1, LinkedList list2){
-        LinkedList res = new LinkedList();
-        while(list1.size() != list2.size()){
-            if(list1.size() > list2.size()){
-                list2.insertNode(0);
-            }
-            else if(list2.size() > list1.size()){
-                list1.insertNode(0);
-            }
-        }
-        res.insertNode(0);
-        Node curr1 = list1.getHead();
-        Node curr2 = list2.getHead();
-        Node currRes = res.getHead();
-        int i = 0;
-        while(curr1.getNext() != null){
-            int temp = 0;
-            int carry = 0;
-            int base;
-            int expon;
-            if(i != 0){
-                base = curr1.getData() * (10*i);
-                expon = curr2.getData() * (10*i);
-            } else{
-                base = curr1.getData();
-                expon = curr2.getData();
-            }
-
-            if(expon % 2 == 0){
-                temp = (int) Math.pow(Math.pow(base, 2), expon/2) ;
-            }
-            else if(expon % 2 != 0){
-                temp = base * (int) Math.pow(Math.pow(base, 2), (expon-1)/2);
-            }
-            carry = temp / 10;
-            temp %= 10;
-            if(currRes.getNext() == null){
-                res.insertNode(temp);
-                if(carry != 0){
-                    res.insertNode(carry);
-                }
-            } else{
-                currRes.setData(currRes.getData() + temp);
-                if(carry != 0){
-                    currRes.getNext().setData(currRes.getNext().getData() + carry);
-                }
-                currRes = currRes.getNext();
-            }
-            curr1 = curr1.getNext();
-            curr2 = curr2.getNext();
-            i++;
+    public static long powerHelper(long x, long n){
+        if(n == 0){
+            return 1;
+        } else if(n == 1){
+            return x;
         }
 
-        int temp = 0;
-        int carry = 0;
-        int base = curr1.getData() * (10*i);
-        int expon = curr2.getData() * (10*i);
-        if(expon % 2 == 0){
-            temp = (int) Math.pow(Math.pow(base, 2), expon/2) ;
-        }
-        else if(expon % 2 != 0){
-            temp = base * (int) Math.pow(Math.pow(base, 2), (expon-1)/2);
-        }
-        carry = temp / 10;
-        temp %= 10;
-        if(currRes.getNext() == null){
-            res.insertNode(temp);
-            if(carry != 0){
-                res.insertNode(carry);
-            }
+        if(n % 2 == 0){
+            long temp = powerHelper(x, n / 2);
+            return temp * temp;
         } else{
-            currRes.setData(currRes.getData() + temp);
-            if(carry != 0){
-                currRes.getNext().setData(currRes.getNext().getData() + carry);
-            }
+            long temp = powerHelper(x, (n - 1) / 2);
+            return x * temp * temp;
         }
+    }
 
+    public static LinkedList Power(LinkedList list1, LinkedList list2){
+        long x = Integer.valueOf(printLinkedList(list1));
+        long n = Integer.valueOf(printLinkedList(list2));
+        long temp = powerHelper(x, n);
+        String str = String.valueOf(temp);
+        String[] str2 = returnReversedArray(str);
+        LinkedList res = addToList(str2);
         return res;
     }
 

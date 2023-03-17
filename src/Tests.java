@@ -1,9 +1,4 @@
 import org.junit.Test;
-
-import java.io.File;
-import java.util.Arrays;
-import java.util.List;
-
 import static org.junit.Assert.assertEquals;
 
 public class Tests {
@@ -68,6 +63,32 @@ public class Tests {
     }
 
     @Test
+    public void testAddition3(){
+        LinkedList l1 = new LinkedList();
+        l1.insertNode(2);
+        LinkedList l2 = new LinkedList();
+        l2.insertNode(9);
+        l2.insertNode(9);
+        String test = FileProcessor.printLinkedList(FileProcessor.Addition(l1, l2));
+        assertEquals(test, "101");
+        System.out.println(test);
+    }
+
+    @Test
+    public void testMultHelper1(){
+        int one = 5;
+        int two = 3;
+        assertEquals(FileProcessor.printLinkedList(FileProcessor.multHelper(one, two)), "15");
+    }
+
+    @Test
+    public void testMultHelper2(){
+        int one = 5;
+        int two = 20;
+        assertEquals(FileProcessor.printLinkedList(FileProcessor.multHelper(one, two)), "100");
+    }
+
+    @Test
     public void testMultiplication1(){
         LinkedList l1 = new LinkedList();
         l1.insertNode(0);
@@ -92,6 +113,12 @@ public class Tests {
         System.out.println(test);
     }
 
+    @Test
+    public void testPowerHelper(){
+        long base = 2;
+        long exponent = 30;
+        assertEquals(FileProcessor.powerHelper(base, exponent), 1073741824);
+    }
     @Test
     public void testPower1(){
         LinkedList l1 = new LinkedList();
