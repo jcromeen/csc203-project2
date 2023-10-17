@@ -195,7 +195,7 @@ public class FileProcessor {
         return res;
     }
 
-    public static long powerHelper(long x, long n){
+   /* public static long powerHelper(long x, long n){
         if(n == 0){
             return 1;
         } else if(n == 1){
@@ -209,16 +209,30 @@ public class FileProcessor {
             long temp = powerHelper(x, (n - 1) / 2);
             return x * temp * temp;
         }
-    }
+    }*/
 
     public static LinkedList Power(LinkedList list1, LinkedList list2){
-        long x = Integer.valueOf(printLinkedList(list1));
+        /*long x = Integer.valueOf(printLinkedList(list1));
         long n = Integer.valueOf(printLinkedList(list2));
         long temp = powerHelper(x, n);
         String str = String.valueOf(temp);
         String[] str2 = returnReversedArray(str);
-        LinkedList res = addToList(str2);
-        return res;
+        LinkedList res = addToList(str2);*/
+        LinkedList carry = new LinkedList();
+        carry.insertNode(0);
+        long exponent = Long.valueOf(printLinkedList(list2));
+        while(exponent > 1){
+            if(exponent % 2 == 0){
+                list1 = Multiplication(list1, list1);
+                exponent /= 2;
+            } else{
+                carry = Multiplication(carry, list1);
+                list1 = Multiplication(list1, list1);
+                exponent /= 2;
+            }
+        }
+
+        return Multiplication(carry, list1);
     }
 
     public static int listToNum(LinkedList nums){

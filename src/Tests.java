@@ -112,13 +112,13 @@ public class Tests {
         assertEquals(test, "500");
         System.out.println(test);
     }
-
+/*
     @Test
     public void testPowerHelper(){
         long base = 2;
         long exponent = 30;
         assertEquals(FileProcessor.powerHelper(base, exponent), 1073741824);
-    }
+    }*/
     @Test
     public void testPower1(){
         LinkedList l1 = new LinkedList();
